@@ -62,6 +62,10 @@ public class HomeActivity extends ToolBarActivity {
     EditText clientId;
     @InjectView(R.id.client_secret)
     EditText clientSecret;
+    @InjectView(R.id.username)
+    EditText username;
+    @InjectView(R.id.password)
+    EditText password;
     DrupalOauth2Manager drupalOauth2Manager;
 
     @OnClick(R.id.sign)
@@ -70,11 +74,9 @@ public class HomeActivity extends ToolBarActivity {
             .setEndpoint(endpoint.getText().toString())
             .setClientId(clientId.getText().toString())
             .setClientSecret(clientSecret.getText().toString())
-            //.setCookie("SSExxx=xxx;") // modify here
-            //.setToken("CCXXXDF") // modify here
             .build();
 
-        drupalOauth2Manager.getAccessToken(new Callback<AccessToken>() {
+        drupalOauth2Manager.getAccessToken(username.getText().toString, password.getText().toString, new Callback<AccessToken>() {
             @Override
             public void success(AccessToken accessToken, Response response) {
                 Log8.d(accessToken);
