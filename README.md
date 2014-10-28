@@ -40,7 +40,7 @@ drupalOauth2Manager.getAccessToken("cookie", new Callback<AccessToken>() {
 });
 ```
 
-* authorize & token with other oauth provider's access toekn
+* authorize & token with other oauth provider's access token
 ```java
 DrupalOauth2Manager drupalOauth2Manager = new DrupalOauth2Manager.Builder().setEndpoint("https://example.com/oauth2").setClientId("id").setClientSecret("secret").build();
 
