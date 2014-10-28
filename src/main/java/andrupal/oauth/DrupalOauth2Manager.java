@@ -50,6 +50,113 @@ public class DrupalOauth2Manager {
     protected String grantType = "authorization_code";
     protected String cookie;
 
+    /**
+     * hybridauth_ulogin/hybridauth_ulogin.admin.inc
+     *
+     * "vkontakte" => "Vkontakte",
+     * "odnoklassniki" => "Odnoklassniki",
+     * "mailru" => "Mailru",
+     * "facebook" => "Facebook",
+     * "twitter" => "Twitter",
+     * "google" => "Google",
+     * "yandex" => "Yandex",
+     * "livejournal" => "",
+     * "openid" => "OpenID",
+     * "lastfm" => "LastFM",
+     * "linkedin" => "LinkedIn",
+     * "liveid" => "Live",
+     * "soundcloud" => "",
+     * "steam" => "Steam",
+     * "flickr" => "",
+     * "vimeo" => "",
+     * "youtube" => "",
+     * "webmoney" => "",
+     *
+     * additional-providers/hybridauth-*/Providers/*
+     *
+     * px500
+     * Deezer
+     * Disqus
+     * Draugiem
+     * DrupalOAuth2
+     * Freeagent
+     * GitHub
+     * Goodreads
+     * Google
+     * Identica
+     * Instagram
+     * LastFM
+     * Latch
+     * Mailru
+     * Murmur
+     * Odnoklassniki
+     * PaypalOpenID
+     * Paypal
+     * PixelPin
+     * Pixnet
+     * Plurk
+     * QQ
+     * Sina
+     * Skyrock
+     * Steam
+     * Tumblr
+     * TwitchTV
+     * Viadeo
+     * Vimeo
+     * Vkontakte
+     * XING
+     * Yahoo
+     * Yammer
+     * Yandex
+     */
+    public static final String DEEZER        = "Deezer";
+    public static final String DISQUS        = "Disqus";
+    public static final String DRAUGIEM      = "Draugiem";
+    public static final String DRUPALOAUTH2  = "DrupalOAuth2";
+    public static final String FACEBOOK      = "Facebook";
+    public static final String FLICKR        = "flickr";
+    public static final String FREEAGENT     = "Freeagent";
+    public static final String GITHUB        = "GitHub";
+    public static final String GOODREADS     = "Goodreads";
+    public static final String GOOGLE        = "Google";
+    public static final String IDENTICA      = "Identica";
+    public static final String INSTAGRAM     = "Instagram";
+    public static final String LASTFM        = "LastFM";
+    public static final String LATCH         = "Latch";
+    public static final String LINKEDIN      = "LinkedIn";
+    public static final String LIVEJOURNAL   = "livejournal";
+    public static final String LIVE          = "Live";
+    public static final String MAILRU        = "Mailru";
+    public static final String MURMUR        = "Murmur";
+    public static final String ODNOKLASSNIKI = "Odnoklassniki";
+    public static final String OPENID        = "OpenID";
+    public static final String PAYPALOPENID  = "PaypalOpenID";
+    public static final String PAYPAL        = "Paypal";
+    public static final String PIXELPIN      = "PixelPin";
+    public static final String PIXNET        = "Pixnet";
+    public static final String PLURK         = "Plurk";
+    public static final String PX500         = "px500";
+    public static final String QQ            = "QQ";
+    public static final String SINA          = "Sina";
+    public static final String SKYROCK       = "Skyrock";
+    public static final String SOUNDCLOUD    = "soundcloud";
+    public static final String STEAM         = "Steam";
+    public static final String TUMBLR        = "Tumblr";
+    public static final String TWITCHTV      = "TwitchTV";
+    public static final String TWITTER       = "Twitter";
+    public static final String VIADEO        = "Viadeo";
+    public static final String VIMEO         = "vimeo";
+    public static final String VIMEO         = "Vimeo";
+    public static final String VKONTAKTE     = "Vkontakte";
+    public static final String WEBMONEY      = "webmoney";
+    public static final String XING          = "XING";
+    public static final String YAHOO         = "Yahoo";
+    public static final String YAMMER        = "Yammer";
+    public static final String YANDEX        = "Yandex";
+    public static final String YOUTUBE       = "youtube";
+
+    protected String provider = FACEBOOK;
+
     public static class Builder {
         String endpoint;
         String clientId;
@@ -185,18 +292,27 @@ public class DrupalOauth2Manager {
         this.token = token;
     }
 
+    /**
+     * https://github.com/yongjhih/drupal-hybridauth/commit/268b72a598665b0738e3b06e7b59dcb3bda5b999
+     *
+     * Allow sign-up with access_token.
+     */
     public void requestHybridauthCookie(Callback<?> callback) {
         if (TextUtils.isEmpty(token)) return;
 
         Uri uri = Uri.parse(endpoint);
 
-        new WebDialog(context, uri.getScheme() + "://" + uri.getAuthority() + "/hybridauth/window/Facebook?destination=node&destination_error=node&access_token=" + token, this, callback).show();
+        new WebDialog(context, uri.getScheme() + "://" + uri.getAuthority() + "/hybridauth/window/" + provider + "?destination=node&destination_error=node&access_token=" + token, this, callback).show();
     }
 
     protected Context context;
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public DrupalOauth2Manager(String endpoint, String clientId, String clientSecret) {
