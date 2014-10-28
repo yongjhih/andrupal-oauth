@@ -60,6 +60,8 @@ Dependency
 
 * https://github.com/yongjhih/drupalfit
 
+Works with drupal/oauth2_server for drupal, and bonus of other oauth provider with drupal/hybridauth
+
 [License] (LICENSE)
 ===================
 
