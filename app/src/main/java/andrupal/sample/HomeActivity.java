@@ -66,6 +66,14 @@ public class HomeActivity extends ToolBarActivity {
 
     @OnClick(R.id.sign)
     public void sign() {
+        drupalOauth2Manager = new DrupalOauth2Manager.Builder(this)
+            .setEndpoint(endpoint.getText().toString())
+            .setClientId(clientId.getText().toString())
+            .setClientSecret(clientSecret.getText().toString())
+            //.setCookie("SSExxx=xxx;") // modify here
+            //.setToken("CCXXXDF") // modify here
+            .build();
+
         drupalOauth2Manager.getAccessToken(new Callback<AccessToken>() {
             @Override
             public void success(AccessToken accessToken, Response response) {
@@ -92,13 +100,6 @@ public class HomeActivity extends ToolBarActivity {
 
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
-
-        drupalOauth2Manager = new DrupalOauth2Manager.Builder()
-            .setEndpoint(endpoint.getText().toString())
-            .setClientId(clientId.getText().toString())
-            .setClientSecret(clientSecret.getText().toString())
-            .setCookie("SSExxx=xxx;") // modify here
-            .build();
     }
 
     @Override protected int getContentView() {

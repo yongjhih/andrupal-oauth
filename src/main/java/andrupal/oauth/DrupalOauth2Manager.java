@@ -37,6 +37,9 @@ import java.security.SecureRandom;
 import andrupal.oauth.DrupalOauth2.AccessToken;
 import andrupal.Log8;
 import android.net.Uri;
+import android.text.TextUtils;
+import android.content.Context;
+import andrupal.WebDialog;
 
 public class DrupalOauth2Manager {
     protected String endpoint;
@@ -52,8 +55,13 @@ public class DrupalOauth2Manager {
         String clientId;
         String clientSecret;
         String cookie;
+        Context context;
 
         public Builder() {
+        }
+
+        public Builder(Context context) {
+            this.context = context;
         }
 
         public Builder setEndpoint(String endpoint) {
@@ -77,8 +85,9 @@ public class DrupalOauth2Manager {
         }
 
         public DrupalOauth2Manager build() {
-            DrupalOauth2Manager manager = new DrupalOauth2Manager(endpoint, clientId, clientSecret);
+            DrupalOauth2Manager manager = new DrupalOauth2Manager(context, endpoint, clientId, clientSecret);
             manager.setCookie(cookie);
+            return manager;
         }
     }
 
@@ -119,31 +128,83 @@ public class DrupalOauth2Manager {
         Log8.d(clientSecret);
         Log8.d(responseType);
         Log8.d(state);
+
+        final Callback authorizeCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Log8.d();
+                Uri uri = Uri.parse(response.getUrl());
+                String code = uri.getQueryParameter("code");
+                if (TextUtils.isEmpty(code)) {
+                    callback.failure(RetrofitError.unexpectedError(response.getUrl(), new RuntimeException()));
+                } else {
+                    mService.token(code, clientId, clientSecret, grantType, state, callback);
+                }
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                callback.failure(error);
+                Log8.d(error);
+            }
+        };
+
+        if (cookie == null) {
+            requestHybridauthCookie(new Callback<Void>() {
+                @Override
+                public void success(Void v, Response response) {
+                    Log8.d();
+                    mService.authorize(
+                        clientId,
+                        clientSecret,
+                        responseType,
+                        state,
+                        authorizeCallback
+                    );
+                }
+                @Override
+                public void failure(RetrofitError error) {
+                    Log8.d();
+                    authorizeCallback.failure(error);
+                }
+            });
+            return;
+        }
+
         mService.authorize(
             clientId,
             clientSecret,
             responseType,
             state,
-            new Callback<Response>() {
-                @Override
-                public void success(Response response, Response response2) {
-                    Log8.d();
-                    Uri uri = Uri.parse(response.getUrl());
-                    String code = uri.getQueryParameter("code");
-                    if (android.text.TextUtils.isEmpty(code)) {
-                        callback.failure(RetrofitError.unexpectedError(response.getUrl(), new RuntimeException()));
-                    } else {
-                        mService.token(code, clientId, clientSecret, grantType, state, callback);
-                    }
-                }
-                @Override
-                public void failure(RetrofitError error) {
-                    Log8.d(error);
-                }
-        });
+            authorizeCallback
+        );
+    }
+
+    protected String token;
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void requestHybridauthCookie(Callback<?> callback) {
+        if (TextUtils.isEmpty(token)) return;
+
+        Uri uri = Uri.parse(endpoint);
+
+        new WebDialog(context, uri.getScheme() + "://" + uri.getAuthority() + "/hybridauth/window/Facebook?destination=node&destination_error=node&access_token=" + token, this, callback).show();
+    }
+
+    protected Context context;
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public DrupalOauth2Manager(String endpoint, String clientId, String clientSecret) {
+        this((Context) null, endpoint, clientId, clientSecret);
+    }
+
+    public DrupalOauth2Manager(Context context, String endpoint, String clientId, String clientSecret) {
+        setContext(context);
         setEndpoint(endpoint);
         setClientId(clientId);
         setClientSecret(clientSecret);

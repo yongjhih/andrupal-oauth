@@ -43,6 +43,10 @@ import java.net.URL;
 import andrupal.oauth.DrupalOauth2Manager;
 import andrupal.Log8;
 
+import retrofit.Callback;
+import retrofit.client.Response;
+import retrofit.RetrofitError;
+
 public class WebDialog extends Dialog {
     public static final int DEFAULT_THEME = android.R.style.Theme_Translucent_NoTitleBar;
     private String url;
@@ -78,8 +82,18 @@ public class WebDialog extends Dialog {
         Log8.d();
     }
 
-    public WebDialog(Context context, String url, DrupalOauth2Manager manager) {
-        this(context, url, DEFAULT_THEME, manager);
+    public WebDialog(Context context, String url, DrupalOauth2Manager manager, Callback<?> callback) {
+        this(context, url, DEFAULT_THEME, manager, callback);
+    }
+
+    public WebDialog(Context context, String url, int theme, DrupalOauth2Manager manager, Callback<?> callback) {
+        this(context, url, theme, manager);
+        this.callback = callback;
+    }
+
+    public WebDialog(Context context, String url, int theme, DrupalOauth2Manager manager) {
+        this(context, url, theme);
+        setDrupalOauth2Manager(manager);
     }
 
     /**
@@ -90,11 +104,6 @@ public class WebDialog extends Dialog {
      *                be a valid URL pointing to a Facebook Web Dialog
      * @param theme   identifier of a theme to pass to the Dialog class
      */
-    public WebDialog(Context context, String url, int theme, DrupalOauth2Manager manager) {
-        this(context, url, theme);
-        setDrupalOauth2Manager(manager);
-    }
-
     public WebDialog(Context context, String url, int theme) {
         super(context, theme);
         Log8.d();
@@ -102,6 +111,7 @@ public class WebDialog extends Dialog {
     }
 
     DrupalOauth2Manager drupalOauth2Manager;
+    Callback<?> callback;
 
     public void setDrupalOauth2Manager(DrupalOauth2Manager drupalOauth2Manager) {
         this.drupalOauth2Manager = drupalOauth2Manager;
@@ -209,10 +219,11 @@ public class WebDialog extends Dialog {
                 if (url.contains("error")) {
                     // error
                     Log8.d("error");
+                    callback.failure((RetrofitError) null);
                 } else {
                     // success
-                    Log8.d();
                     drupalOauth2Manager.setCookie(android.webkit.CookieManager.getInstance().getCookie(url));
+                    callback.success(null, (Response) null);
                     Log8.d("success");
                 }
                 WebDialog.this.dismiss();
