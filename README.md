@@ -1,5 +1,5 @@
-andrupal-oauth2
-===============
+andrupal-oauth
+==============
 
 ![drupal](drupal-circle.png "drupal")
 
