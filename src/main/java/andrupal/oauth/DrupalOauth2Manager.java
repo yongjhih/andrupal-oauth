@@ -45,9 +45,9 @@ public class DrupalOauth2Manager {
     protected String endpoint;
     protected String clientId;
     protected String clientSecret;
-    protected String responseType = "code";
+    //protected String responseType = "code";
     protected String state = "null"; // modify here
-    protected String grantType = "authorization_code";
+    //protected String grantType = "authorization_code";
     protected String cookie;
 
     /**
@@ -230,10 +230,36 @@ public class DrupalOauth2Manager {
         allTrust = true;
     }
 
+    /**
+     * getAccessTokenByPassword
+     */
+    public void getAccessToken(String username, String password, Callback<AccessToken> callback) {
+        mService.token(
+            clientId,
+            clientSecret,
+            "password",
+            state,
+            username,
+            password,
+            callback
+        );
+    }
+
+    /**
+     * getAccessTokenByCookie byCode
+     * Need Context unless failure
+     */
     public void getAccessToken(final Callback<AccessToken> callback) {
+        getAccessToken(null, callback);
+    }
+
+    public void getAccessToken(Context context, final Callback<AccessToken> callback) {
+        if (context != null) {
+            this.context = context;
+        }
+
         Log8.d(clientId);
         Log8.d(clientSecret);
-        Log8.d(responseType);
         Log8.d(state);
 
         final Callback authorizeCallback = new Callback<Response>() {
@@ -245,7 +271,7 @@ public class DrupalOauth2Manager {
                 if (TextUtils.isEmpty(code)) {
                     callback.failure(RetrofitError.unexpectedError(response.getUrl(), new RuntimeException()));
                 } else {
-                    mService.token(code, clientId, clientSecret, grantType, state, callback);
+                    mService.token(code, clientId, clientSecret, "authorization_code", state, callback);
                 }
             }
             @Override
@@ -263,7 +289,7 @@ public class DrupalOauth2Manager {
                     mService.authorize(
                         clientId,
                         clientSecret,
-                        responseType,
+                        "code",
                         state,
                         authorizeCallback
                     );
@@ -280,7 +306,7 @@ public class DrupalOauth2Manager {
         mService.authorize(
             clientId,
             clientSecret,
-            responseType,
+            "code",
             state,
             authorizeCallback
         );
@@ -297,7 +323,11 @@ public class DrupalOauth2Manager {
      *
      * Allow sign-up with access_token.
      */
-    public void requestHybridauthCookie(Callback<?> callback) {
+    private void requestHybridauthCookie(Callback<?> callback) {
+        requestHybridauthCookie(this.context, callback);
+    }
+
+    private void requestHybridauthCookie(Context context, Callback<?> callback) {
         if (TextUtils.isEmpty(token)) return;
 
         Uri uri = Uri.parse(endpoint);

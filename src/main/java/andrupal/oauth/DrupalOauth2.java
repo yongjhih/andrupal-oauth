@@ -27,6 +27,9 @@ import proguard.annotation.KeepClassMembers;
  * DrupalOauth2.
  */
 public interface DrupalOauth2 {
+    /**
+     * curl -L -I -k -b b.cookie -X GET 'https://example.com/oauth2/authorize?client_id=id&client_secret=secret&response_type=code&state=state'
+     */
     @GET("/authorize")
     void authorize(
         @Query("client_id") String clientId,
@@ -36,6 +39,9 @@ public interface DrupalOauth2 {
         Callback<Response> callback
     );
 
+    /**
+     * curl -k -X POST 'https://example.com/oauth2/token' -d 'code=aa5b25e58cb0ecbb1ddf5d671e769b04cabcdefg&state=8tory&grant_type=authorization_code&client_id=id&client_secret=secret'
+     */
     @Multipart
     @POST("/token")
     void token(
@@ -44,6 +50,21 @@ public interface DrupalOauth2 {
         @Part("client_secret") String clientSecret,
         @Part("grant_type") String grantType,
         @Part("state") String state,
+        Callback<AccessToken> callback
+    );
+
+    /**
+     * curl -k -X POST 'https://example.com/oauth2/token' -d 'grant_type=password&client_id=id&client_secret=secret&state=state&username=foo&password=bar'
+     */
+    @Multipart
+    @POST("/token")
+    void token(
+        @Part("client_id") String clientId,
+        @Part("client_secret") String clientSecret,
+        @Part("grant_type") String grantType,
+        @Part("state") String state,
+        @Part("username") String username,
+        @Part("password") String password,
         Callback<AccessToken> callback
     );
 
