@@ -76,7 +76,7 @@ public class HomeActivity extends ToolBarActivity {
             .setClientSecret(clientSecret.getText().toString())
             .build();
 
-        drupalOauth2Manager.getAccessToken(username.getText().toString, password.getText().toString, new Callback<AccessToken>() {
+        drupalOauth2Manager.getAccessToken(username.getText().toString(), password.getText().toString(), new Callback<AccessToken>() {
             @Override
             public void success(AccessToken accessToken, Response response) {
                 Log8.d(accessToken);

@@ -86,6 +86,8 @@ public class WebDialog extends Dialog {
         this(context, url, DEFAULT_THEME, callback);
     }
 
+    protected Callback<String> callback;
+
     public WebDialog(Context context, String url, int theme, Callback<String> callback) {
         this(context, url, theme);
         this.callback = callback;

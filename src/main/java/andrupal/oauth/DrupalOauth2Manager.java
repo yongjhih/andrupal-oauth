@@ -72,7 +72,7 @@ public class DrupalOauth2Manager {
      * "youtube" => "",
      * "webmoney" => "",
      *
-     * additional-providers/hybridauth-*/Providers/*
+     * additional-providers/hybridauth-/Providers/
      *
      * px500
      * Deezer
@@ -146,7 +146,6 @@ public class DrupalOauth2Manager {
     public static final String TWITTER       = "Twitter";
     public static final String VIADEO        = "Viadeo";
     public static final String VIMEO         = "vimeo";
-    public static final String VIMEO         = "Vimeo";
     public static final String VKONTAKTE     = "Vkontakte";
     public static final String WEBMONEY      = "webmoney";
     public static final String XING          = "XING";
@@ -284,12 +283,8 @@ public class DrupalOauth2Manager {
         getAccessToken(context, provider, token, callback);
     }
 
-    public void getAccessToken(String provider, String token, final Callback<AccessToken> callback) {
-        getAccessToken(context, provider, token, callback);
-    }
-
     public void getAccessToken(Context context, String provider, String token, final Callback<AccessToken> callback) {
-        requestHybridauthCookie(contextk, provider, token, new Callback<String>() {
+        requestHybridauthCookie(context, provider, token, new Callback<String>() {
             @Override
             public void success(String cookie, Response response) {
                 Log8.d();
