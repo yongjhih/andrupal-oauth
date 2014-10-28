@@ -3,7 +3,7 @@ andrupal-oauth
 
 ![drupal](drupal-circle.png "drupal")
 
-A drupal services rest client with retrofit for android
+A drupal oauth2_server client for android.
 
 ![oauth](oauth_logo.png "oauth")
 
