@@ -1,0 +1,70 @@
+package andrupal.oauth;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.squareup.okhttp.OkHttpClient;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Client;
+import retrofit.client.OkClient;
+import retrofit.client.Response;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
+import retrofit.http.Multipart;
+import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.http.Path;
+import retrofit.http.Query;
+import retrofit.http.Streaming;
+import retrofit.mime.TypedFile;
+
+import proguard.annotation.Keep;
+import proguard.annotation.KeepClassMembers;
+
+/**
+ * DrupalOauth2.
+ */
+public interface DrupalOauth2 {
+    @GET("/authorize")
+    void authorize(
+        @Query("client_id") String clientId,
+        @Query("client_secret") String clientSecret,
+        @Query("response_type") String responseType,
+        @Query("state") String state,
+        Callback<Response> callback
+    );
+
+    @Multipart
+    @POST("/token")
+    void token(
+        @Part("code") String code,
+        @Part("client_id") String clientId,
+        @Part("client_secret") String clientSecret,
+        @Part("grant_type") String grantType,
+        @Part("state") String state,
+        Callback<AccessToken> callback
+    );
+
+    @Keep
+    @KeepClassMembers
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class AccessToken {
+        public String access_token;
+        public Long expires_in;
+        public Boolean array_key_exists;
+        public String scope;
+        public String refresh_token;
+
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("access_token: " + access_token + "\n");
+            sb.append("expires_in: " + expires_in + "\n");
+            sb.append("array_key_exists: " + array_key_exists + "\n");
+            sb.append("scope: " + scope + "\n");
+            sb.append("refresh_token: " + refresh_token + "\n");
+            return sb.toString();
+        }
+    }
+}
