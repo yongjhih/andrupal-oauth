@@ -1,6 +1,8 @@
 andrupal-oauth
 ==============
 
+![travis of master](https://travis-ci.org/yongjhih/andrupal-oauth.svg?branch=master "travis of master")
+
 ![drupal](drupal-circle.png "drupal")
 
 A drupal oauth2_server client for android.
