@@ -245,22 +245,8 @@ public class DrupalOauth2Manager {
         );
     }
 
-    /**
-     * getAccessTokenByCookie byCode
-     * Need Context unless failure
-     */
-    public void getAccessToken(final Callback<AccessToken> callback) {
-        getAccessToken(null, callback);
-    }
-
-    public void getAccessToken(Context context, final Callback<AccessToken> callback) {
-        if (context != null) {
-            this.context = context;
-        }
-
-        Log8.d(clientId);
-        Log8.d(clientSecret);
-        Log8.d(state);
+    public void getAccessToken(String cookie, final Callback<AccessToken> callback) {
+        mRequestInterceptor.setCookie(cookie);
 
         final Callback authorizeCallback = new Callback<Response>() {
             @Override
@@ -281,28 +267,6 @@ public class DrupalOauth2Manager {
             }
         };
 
-        if (cookie == null) {
-            requestHybridauthCookie(new Callback<Void>() {
-                @Override
-                public void success(Void v, Response response) {
-                    Log8.d();
-                    mService.authorize(
-                        clientId,
-                        clientSecret,
-                        "code",
-                        state,
-                        authorizeCallback
-                    );
-                }
-                @Override
-                public void failure(RetrofitError error) {
-                    Log8.d();
-                    authorizeCallback.failure(error);
-                }
-            });
-            return;
-        }
-
         mService.authorize(
             clientId,
             clientSecret,
@@ -310,6 +274,33 @@ public class DrupalOauth2Manager {
             state,
             authorizeCallback
         );
+    }
+
+    public void getAccessToken(final Callback<AccessToken> callback) {
+        getAccessToken(context, provider, token, callback);
+    }
+
+    public void getAccessToken(Context context, final Callback<AccessToken> callback) {
+        getAccessToken(context, provider, token, callback);
+    }
+
+    public void getAccessToken(String provider, String token, final Callback<AccessToken> callback) {
+        getAccessToken(context, provider, token, callback);
+    }
+
+    public void getAccessToken(Context context, String provider, String token, final Callback<AccessToken> callback) {
+        requestHybridauthCookie(contextk, provider, token, new Callback<String>() {
+            @Override
+            public void success(String cookie, Response response) {
+                Log8.d();
+                getAccessToken(cookie, callback);
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                Log8.d();
+                callback.failure(error);
+            }
+        });
     }
 
     protected String token;
@@ -323,16 +314,13 @@ public class DrupalOauth2Manager {
      *
      * Allow sign-up with access_token.
      */
-    private void requestHybridauthCookie(Callback<?> callback) {
-        requestHybridauthCookie(this.context, callback);
-    }
-
-    private void requestHybridauthCookie(Context context, Callback<?> callback) {
+    private void requestHybridauthCookie(Context context, String provider, String token, Callback<String> callback) {
+        if (context == null) return;
         if (TextUtils.isEmpty(token)) return;
 
         Uri uri = Uri.parse(endpoint);
 
-        new WebDialog(context, uri.getScheme() + "://" + uri.getAuthority() + "/hybridauth/window/" + provider + "?destination=node&destination_error=node&access_token=" + token, this, callback).show();
+        new WebDialog(context, uri.getScheme() + "://" + uri.getAuthority() + "/hybridauth/window/" + provider + "?destination=node&destination_error=node&access_token=" + token, callback).show();
     }
 
     protected Context context;

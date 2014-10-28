@@ -82,18 +82,13 @@ public class WebDialog extends Dialog {
         Log8.d();
     }
 
-    public WebDialog(Context context, String url, DrupalOauth2Manager manager, Callback<?> callback) {
-        this(context, url, DEFAULT_THEME, manager, callback);
+    public WebDialog(Context context, String url, Callback<String> callback) {
+        this(context, url, DEFAULT_THEME, callback);
     }
 
-    public WebDialog(Context context, String url, int theme, DrupalOauth2Manager manager, Callback<?> callback) {
-        this(context, url, theme, manager);
-        this.callback = callback;
-    }
-
-    public WebDialog(Context context, String url, int theme, DrupalOauth2Manager manager) {
+    public WebDialog(Context context, String url, int theme, Callback<String> callback) {
         this(context, url, theme);
-        setDrupalOauth2Manager(manager);
+        this.callback = callback;
     }
 
     /**
@@ -108,13 +103,6 @@ public class WebDialog extends Dialog {
         super(context, theme);
         Log8.d();
         this.url = url;
-    }
-
-    DrupalOauth2Manager drupalOauth2Manager;
-    Callback<?> callback;
-
-    public void setDrupalOauth2Manager(DrupalOauth2Manager drupalOauth2Manager) {
-        this.drupalOauth2Manager = drupalOauth2Manager;
     }
 
     @Override
@@ -222,8 +210,7 @@ public class WebDialog extends Dialog {
                     callback.failure((RetrofitError) null);
                 } else {
                     // success
-                    drupalOauth2Manager.setCookie(android.webkit.CookieManager.getInstance().getCookie(url));
-                    callback.success(null, (Response) null);
+                    callback.success(android.webkit.CookieManager.getInstance().getCookie(url), (Response) null);
                     Log8.d("success");
                 }
                 WebDialog.this.dismiss();
