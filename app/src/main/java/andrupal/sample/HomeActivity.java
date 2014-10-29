@@ -82,7 +82,7 @@ public class HomeActivity extends ToolBarActivity {
                 Log8.d(accessToken);
                 Log8.d(accessToken.access_token);
                 //accessToken.access_token;
-                Toast.makeText(HomeActivity.this, "success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "success: " + accessToken.access_token, Toast.LENGTH_LONG).show();
             }
             @Override
             public void failure(RetrofitError error) {
