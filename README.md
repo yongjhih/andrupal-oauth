@@ -1,7 +1,7 @@
 andrupal-oauth
 ==============
 
-[![Build Status](https://travis-ci.org/yongjhih/andrupal-oauth.svg?branch=master)](https://travis-ci.org/yongjhih/andrupal-oauth) [![Stories in Ready](https://badge.waffle.io/yongjhih/andrupal-oauth.png)](http://waffle.io/yongjhih/andrupal-oauth) 
+[![Build Status](https://travis-ci.org/yongjhih/andrupal-oauth.svg?branch=master)](https://travis-ci.org/yongjhih/andrupal-oauth) [![Stories in Ready](https://badge.waffle.io/yongjhih/andrupal-oauth.png)](http://waffle.io/yongjhih/andrupal-oauth)
 
 ![drupal](drupal-circle.png "drupal")
 
@@ -57,10 +57,22 @@ drupalOauth2Manager.getAccessToken(context, DrupalOauth2Manager.FACEBOOK, "fb_ac
 });
 ```
 
+Installation
+============
+
+build.gradle:
+
+```gradle
+dependencies {
+    ...
+    compile "com.infstory:andrupal-oauth:+"
+}
+```
+
 Misc
 ====
 
-Works with drupal/oauth2_server for drupal, and bonus of other oauth provider with yongjhih/drupal-hybridauth ( https://github.com/yongjhih/drupal-hybridauth/commit/268b72a598665b0738e3b06e7b59dcb3bda5b999)
+Works with drupal/oauth2_server for drupal, and the bonus of other oauth provider with yongjhih/drupal-hybridauth (https://github.com/yongjhih/drupal-hybridauth/commit/268b72a598665b0738e3b06e7b59dcb3bda5b999)
 
 [License] (LICENSE)
 ===================
