@@ -2,6 +2,7 @@ andrupal-oauth
 ==============
 
 [![Build Status](https://travis-ci.org/yongjhih/andrupal-oauth.svg?branch=master)](https://travis-ci.org/yongjhih/andrupal-oauth) [![Stories in Ready](https://badge.waffle.io/yongjhih/andrupal-oauth.png)](http://waffle.io/yongjhih/andrupal-oauth)
+[![Bountysource](https://www.bountysource.com/badge/team?team_id=43965&style=bounties_posted)](https://www.bountysource.com/teams/8tory/bounties?utm_source=8tory&utm_medium=shield&utm_campaign=bounties_posted)
 
 ![drupal](drupal-circle.png "drupal")
 
