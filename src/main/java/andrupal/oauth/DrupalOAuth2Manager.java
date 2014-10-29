@@ -46,7 +46,7 @@ public class DrupalOAuth2Manager {
     protected String clientId;
     protected String clientSecret;
     //protected String responseType = "code";
-    protected String state = "null"; // modify here
+    protected String state = "state"; // modify here
     //protected String grantType = "authorization_code";
     protected String cookie;
 
