@@ -1,7 +1,7 @@
 andrupal-oauth
 ==============
 
-![travis of master](https://travis-ci.org/yongjhih/andrupal-oauth.svg?branch=master "travis of master")
+[![Build Status](https://travis-ci.org/yongjhih/andrupal-oauth.svg?branch=master)](https://travis-ci.org/yongjhih/andrupal-oauth) [![Stories in Ready](https://badge.waffle.io/yongjhih/andrupal-oauth.png)](http://waffle.io/yongjhih/andrupal-oauth) 
 
 ![drupal](drupal-circle.png "drupal")
 
