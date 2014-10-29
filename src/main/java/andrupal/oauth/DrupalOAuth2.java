@@ -24,9 +24,9 @@ import proguard.annotation.Keep;
 import proguard.annotation.KeepClassMembers;
 
 /**
- * DrupalOauth2.
+ * DrupalOAuth2.
  */
-public interface DrupalOauth2 {
+public interface DrupalOAuth2 {
     /**
      * curl -L -I -k -b b.cookie -X GET 'https://example.com/oauth2/authorize?client_id=id&client_secret=secret&response_type=code&state=state'
      */
@@ -50,7 +50,7 @@ public interface DrupalOauth2 {
         @Part("client_secret") String clientSecret,
         @Part("grant_type") String grantType,
         @Part("state") String state,
-        Callback<AccessToken> callback
+        Callback<Credential> callback
     );
 
     /**
@@ -65,13 +65,13 @@ public interface DrupalOauth2 {
         @Part("state") String state,
         @Part("username") String username,
         @Part("password") String password,
-        Callback<AccessToken> callback
+        Callback<Credential> callback
     );
 
     @Keep
     @KeepClassMembers
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class AccessToken {
+    public static class Credential {
         public String access_token;
         public Long expires_in;
         public Boolean array_key_exists;

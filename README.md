@@ -17,10 +17,10 @@ Usage
 ```java
 DrupalOauth2Manager drupalOauth2Manager = new DrupalOauth2Manager.Builder().setEndpoint("https://example.com/oauth2").setClientId("id").setClientSecret("secret").build();
 
-drupalOauth2Manager.getAccessToken("username", "password", new Callback<AccessToken>() {
+drupalOauth2Manager.getAccessToken("username", "password", new Callback<Credential>() {
     @Override
-    public void success(AccessToken accessToken, Response response) {
-        //accessToken.access_token;
+    public void success(Credential credential, Response response) {
+        //credential.access_token;
     }
     @Override
     public void failure(RetrofitError error) {
@@ -32,10 +32,10 @@ drupalOauth2Manager.getAccessToken("username", "password", new Callback<AccessTo
 ```java
 DrupalOauth2Manager drupalOauth2Manager = new DrupalOauth2Manager.Builder().setEndpoint("https://example.com/oauth2").setClientId("id").setClientSecret("secret").build();
 
-drupalOauth2Manager.getAccessToken("cookie", new Callback<AccessToken>() {
+drupalOauth2Manager.getAccessToken("cookie", new Callback<Credential>() {
     @Override
-    public void success(AccessToken accessToken, Response response) {
-        //accessToken.access_token;
+    public void success(Credential credential, Response response) {
+        //credential.access_token;
     }
     @Override
     public void failure(RetrofitError error) {
@@ -47,10 +47,10 @@ drupalOauth2Manager.getAccessToken("cookie", new Callback<AccessToken>() {
 ```java
 DrupalOauth2Manager drupalOauth2Manager = new DrupalOauth2Manager.Builder().setEndpoint("https://example.com/oauth2").setClientId("id").setClientSecret("secret").build();
 
-drupalOauth2Manager.getAccessToken(context, DrupalOauth2Manager.FACEBOOK, "fb_access_token", new Callback<AccessToken>() {
+drupalOauth2Manager.getAccessToken(context, DrupalOauth2Manager.FACEBOOK, "fb_access_token", new Callback<Credential>() {
     @Override
-    public void success(AccessToken accessToken, Response response) {
-        //accessToken.access_token;
+    public void success(Credential credential, Response response) {
+        //credential.access_token;
     }
     @Override
     public void failure(RetrofitError error) {

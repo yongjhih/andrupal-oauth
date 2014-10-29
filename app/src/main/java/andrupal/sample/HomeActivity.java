@@ -31,8 +31,8 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import andrupal.oauth.DrupalOauth2Manager;
-import andrupal.oauth.DrupalOauth2.AccessToken;
+import andrupal.oauth.DrupalOAuth2Manager;
+import andrupal.oauth.DrupalOAuth2.Credential;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -66,23 +66,23 @@ public class HomeActivity extends ToolBarActivity {
     EditText username;
     @InjectView(R.id.password)
     EditText password;
-    DrupalOauth2Manager drupalOauth2Manager;
+    DrupalOAuth2Manager drupalOAuth2Manager;
 
     @OnClick(R.id.sign)
     public void sign() {
-        drupalOauth2Manager = new DrupalOauth2Manager.Builder(this)
+        drupalOAuth2Manager = new DrupalOAuth2Manager.Builder(this)
             .setEndpoint(endpoint.getText().toString())
             .setClientId(clientId.getText().toString())
             .setClientSecret(clientSecret.getText().toString())
             .build();
 
-        drupalOauth2Manager.getAccessToken(username.getText().toString(), password.getText().toString(), new Callback<AccessToken>() {
+        drupalOAuth2Manager.getAccessToken(username.getText().toString(), password.getText().toString(), new Callback<Credential>() {
             @Override
-            public void success(AccessToken accessToken, Response response) {
-                Log8.d(accessToken);
-                Log8.d(accessToken.access_token);
-                //accessToken.access_token;
-                Toast.makeText(HomeActivity.this, "success: " + accessToken.access_token, Toast.LENGTH_LONG).show();
+            public void success(Credential credential, Response response) {
+                Log8.d(credential);
+                Log8.d(credential.access_token);
+                //credential.access_token;
+                Toast.makeText(HomeActivity.this, "success: " + credential.access_token, Toast.LENGTH_LONG).show();
             }
             @Override
             public void failure(RetrofitError error) {

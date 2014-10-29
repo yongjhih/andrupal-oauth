@@ -40,7 +40,7 @@ import android.widget.LinearLayout;
 import android.webkit.CookieSyncManager;
 import java.net.URL;
 
-import andrupal.oauth.DrupalOauth2Manager;
+import andrupal.oauth.DrupalOAuth2Manager;
 import andrupal.Log8;
 
 import retrofit.Callback;

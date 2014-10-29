@@ -34,14 +34,14 @@ import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.io.IOException;
 import java.security.SecureRandom;
-import andrupal.oauth.DrupalOauth2.AccessToken;
+import andrupal.oauth.DrupalOAuth2.Credential;
 import andrupal.Log8;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.content.Context;
 import andrupal.WebDialog;
 
-public class DrupalOauth2Manager {
+public class DrupalOAuth2Manager {
     protected String endpoint;
     protected String clientId;
     protected String clientSecret;
@@ -190,8 +190,8 @@ public class DrupalOauth2Manager {
             return this;
         }
 
-        public DrupalOauth2Manager build() {
-            DrupalOauth2Manager manager = new DrupalOauth2Manager(context, endpoint, clientId, clientSecret);
+        public DrupalOAuth2Manager build() {
+            DrupalOAuth2Manager manager = new DrupalOAuth2Manager(context, endpoint, clientId, clientSecret);
             manager.setCookie(cookie);
             return manager;
         }
@@ -209,13 +209,13 @@ public class DrupalOauth2Manager {
         this.clientSecret = clientSecret;
     }
 
-    private DrupalOauth2 mService;
+    private DrupalOAuth2 mService;
 
-    public DrupalOauth2Manager(String endpoint) {
+    public DrupalOAuth2Manager(String endpoint) {
         this(endpoint, null, null);
     }
 
-    public DrupalOauth2Manager(String endpoint, String clientId) {
+    public DrupalOAuth2Manager(String endpoint, String clientId) {
         this(endpoint, clientId, null);
     }
 
@@ -232,7 +232,7 @@ public class DrupalOauth2Manager {
     /**
      * getAccessTokenByPassword
      */
-    public void getAccessToken(String username, String password, Callback<AccessToken> callback) {
+    public void getAccessToken(String username, String password, Callback<Credential> callback) {
         mService.token(
             clientId,
             clientSecret,
@@ -244,7 +244,7 @@ public class DrupalOauth2Manager {
         );
     }
 
-    public void getAccessToken(String cookie, final Callback<AccessToken> callback) {
+    public void getAccessToken(String cookie, final Callback<Credential> callback) {
         mRequestInterceptor.setCookie(cookie);
 
         final Callback authorizeCallback = new Callback<Response>() {
@@ -275,15 +275,15 @@ public class DrupalOauth2Manager {
         );
     }
 
-    public void getAccessToken(final Callback<AccessToken> callback) {
+    public void getAccessToken(final Callback<Credential> callback) {
         getAccessToken(context, provider, token, callback);
     }
 
-    public void getAccessToken(Context context, final Callback<AccessToken> callback) {
+    public void getAccessToken(Context context, final Callback<Credential> callback) {
         getAccessToken(context, provider, token, callback);
     }
 
-    public void getAccessToken(Context context, String provider, String token, final Callback<AccessToken> callback) {
+    public void getAccessToken(Context context, String provider, String token, final Callback<Credential> callback) {
         requestHybridauthCookie(context, provider, token, new Callback<String>() {
             @Override
             public void success(String cookie, Response response) {
@@ -328,11 +328,11 @@ public class DrupalOauth2Manager {
         this.provider = provider;
     }
 
-    public DrupalOauth2Manager(String endpoint, String clientId, String clientSecret) {
+    public DrupalOAuth2Manager(String endpoint, String clientId, String clientSecret) {
         this((Context) null, endpoint, clientId, clientSecret);
     }
 
-    public DrupalOauth2Manager(Context context, String endpoint, String clientId, String clientSecret) {
+    public DrupalOAuth2Manager(Context context, String endpoint, String clientId, String clientSecret) {
         setContext(context);
         setEndpoint(endpoint);
         setClientId(clientId);
@@ -361,7 +361,7 @@ public class DrupalOauth2Manager {
             .setConverter(new retrofit.converter.JacksonConverter())
             .build();
 
-        mService = restAdapter.create(DrupalOauth2.class);
+        mService = restAdapter.create(DrupalOAuth2.class);
     }
 
     public String getCookie() {
